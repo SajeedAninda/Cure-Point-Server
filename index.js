@@ -29,6 +29,15 @@ async function run() {
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
         let userCollection = client.db("CurePoint").collection("users");
+
+        // POST USER DATA WHILE REGISTERING 
+        app.post("/userRegister", async (req, res) => {
+            let user = req.body;
+            let result = await userCollection.insertOne(user);
+            res.send(result);
+        })
+
+
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
         // Ensures that the client will close when you finish/error
