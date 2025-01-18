@@ -29,11 +29,19 @@ async function run() {
         // Send a ping to confirm a successful connection
         // await client.db("admin").command({ ping: 1 });
         let userCollection = client.db("CurePoint").collection("users");
+        let appointmentCollection = client.db("CurePoint").collection("appointmentBookings");
 
         // POST USER DATA WHILE REGISTERING 
         app.post("/userRegister", async (req, res) => {
             let user = req.body;
             let result = await userCollection.insertOne(user);
+            res.send(result);
+        })
+
+        // POST APPOINTMENT BOOKINGS BY USER 
+        app.post("/appointments", async (req, res) => {
+            let bookings = req.body;
+            let result = await appointmentCollection.insertOne(bookings);
             res.send(result);
         })
 
