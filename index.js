@@ -10,7 +10,7 @@ app.use(express.json());
 const port = 5000
 
 
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const uri = `${process.env.MONGO_URI}`;
 
 // Create a MongoClient with a MongoClientOptions object to set the Stable API version
@@ -45,11 +45,23 @@ async function run() {
             res.send(result);
         })
 
+        // GET USER APPOINTMENTS BY EMAIL 
+
         app.get("/userAppointments", async (req, res) => {
             let userEmail = req.query.email;
             let result = await appointmentCollection.find({ email: userEmail }).toArray();
             res.send(result);
         });
+
+        // DELETE USER APPOINTMENTS 
+        app.delete("/userAppointment/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = {
+              _id: new ObjectId(id),
+            };
+            const result = await appointmentCollection.deleteOne(query);
+            res.send(result);
+          });
 
 
 
