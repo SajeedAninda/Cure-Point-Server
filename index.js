@@ -45,6 +45,13 @@ async function run() {
             res.send(result);
         })
 
+        app.get("/userAppointments", async (req, res) => {
+            let userEmail = req.query.email;
+            let result = await appointmentCollection.find({ email: userEmail }).toArray();
+            res.send(result);
+        });
+
+
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
     } finally {
