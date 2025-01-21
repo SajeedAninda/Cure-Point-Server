@@ -91,6 +91,12 @@ async function run() {
             res.send(result);
         });
 
+        // API TO GET ALL USERS 
+        app.get("/allUsers", async (req, res) => {
+            const result = await userCollection.find().toArray();
+            res.send(result);
+        });
+
 
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
