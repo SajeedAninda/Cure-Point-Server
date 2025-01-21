@@ -81,6 +81,16 @@ async function run() {
             res.send(result);
         });
 
+        // API TO GET CURRENT USER DATA 
+        app.get("/userData/:email", async (req, res) => {
+            const email = req.params.email;
+            const query = {
+                email: email,
+            };
+            const result = await userCollection.findOne(query);
+            res.send(result);
+        });
+
 
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
