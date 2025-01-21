@@ -57,11 +57,29 @@ async function run() {
         app.delete("/userAppointment/:id", async (req, res) => {
             const id = req.params.id;
             const query = {
-              _id: new ObjectId(id),
+                _id: new ObjectId(id),
             };
             const result = await appointmentCollection.deleteOne(query);
             res.send(result);
-          });
+        });
+
+        //   UPDATE PAID STATUS FOR APPOINTMENTS 
+        app.patch("/appointmentStatus/:id", async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const updatedStatus = {
+                $set: {
+                    paymentStatus: "paid"
+                },
+            };
+            const result = await appointmentCollection.updateOne(
+                filter,
+                updatedStatus,
+                options
+            );
+            res.send(result);
+        });
 
 
 
