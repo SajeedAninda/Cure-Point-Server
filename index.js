@@ -97,7 +97,7 @@ async function run() {
             res.send(result);
         });
 
-        //API TO DELETE AN USER  
+        // API TO DELETE AN USER  
         app.delete("/deleteUser/:id", async (req, res) => {
             const id = req.params.id;
             const query = {
@@ -107,6 +107,24 @@ async function run() {
             res.send(result);
         });
 
+
+        // UPDATE USER STATUS TO MAKE ADMIN 
+        app.patch("/makeAdmin/:id", async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const updatedStatus = {
+                $set: {
+                    role: "admin"
+                },
+            };
+            const result = await userCollection.updateOne(
+                filter,
+                updatedStatus,
+                options
+            );
+            res.send(result);
+        });
 
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
