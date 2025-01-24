@@ -30,6 +30,7 @@ async function run() {
         // await client.db("admin").command({ ping: 1 });
         let userCollection = client.db("CurePoint").collection("users");
         let appointmentCollection = client.db("CurePoint").collection("appointmentBookings");
+        let doctorCollection = client.db("CurePoint").collection("doctors");
 
         // POST USER DATA WHILE REGISTERING 
         app.post("/userRegister", async (req, res) => {
@@ -125,6 +126,13 @@ async function run() {
             );
             res.send(result);
         });
+
+        // POST DOCTORS DATA WHEN ADDING DOCTORS 
+        app.post("/addDoctors", async (req, res) => {
+            let doctor = req.body;
+            let result = await doctorCollection.insertOne(doctor);
+            res.send(result);
+        })
 
 
         console.log("Pinged your deployment. You successfully connected to MongoDB!");
