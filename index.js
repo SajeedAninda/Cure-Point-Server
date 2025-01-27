@@ -49,6 +49,41 @@ async function run() {
             res.send(result);
         });
 
+        // API TO GET ALL USERS 
+        app.get("/allUsers", async (req, res) => {
+            const result = await userCollection.find().toArray();
+            res.send(result);
+        });
+
+        // API TO DELETE AN USER  
+        app.delete("/deleteUser/:id", async (req, res) => {
+            const id = req.params.id;
+            const query = {
+                _id: new ObjectId(id),
+            };
+            const result = await userCollection.deleteOne(query);
+            res.send(result);
+        });
+
+
+        // UPDATE USER STATUS TO MAKE ADMIN 
+        app.patch("/makeAdmin/:id", async (req, res) => {
+            const id = req.params.id;
+            const filter = { _id: new ObjectId(id) };
+            const options = { upsert: true };
+            const updatedStatus = {
+                $set: {
+                    role: "admin"
+                },
+            };
+            const result = await userCollection.updateOne(
+                filter,
+                updatedStatus,
+                options
+            );
+            res.send(result);
+        });
+
         // POST APPOINTMENT BOOKINGS BY USER 
         app.post("/appointments", async (req, res) => {
             let bookings = req.body;
@@ -84,41 +119,6 @@ async function run() {
                 },
             };
             const result = await appointmentCollection.updateOne(
-                filter,
-                updatedStatus,
-                options
-            );
-            res.send(result);
-        });
-
-        // API TO GET ALL USERS 
-        app.get("/allUsers", async (req, res) => {
-            const result = await userCollection.find().toArray();
-            res.send(result);
-        });
-
-        // API TO DELETE AN USER  
-        app.delete("/deleteUser/:id", async (req, res) => {
-            const id = req.params.id;
-            const query = {
-                _id: new ObjectId(id),
-            };
-            const result = await userCollection.deleteOne(query);
-            res.send(result);
-        });
-
-
-        // UPDATE USER STATUS TO MAKE ADMIN 
-        app.patch("/makeAdmin/:id", async (req, res) => {
-            const id = req.params.id;
-            const filter = { _id: new ObjectId(id) };
-            const options = { upsert: true };
-            const updatedStatus = {
-                $set: {
-                    role: "admin"
-                },
-            };
-            const result = await userCollection.updateOne(
                 filter,
                 updatedStatus,
                 options
