@@ -39,6 +39,16 @@ async function run() {
             res.send(result);
         })
 
+        // API TO GET CURRENT USER DATA 
+        app.get("/userData/:email", async (req, res) => {
+            const email = req.params.email;
+            const query = {
+                email: email,
+            };
+            const result = await userCollection.findOne(query);
+            res.send(result);
+        });
+
         // POST APPOINTMENT BOOKINGS BY USER 
         app.post("/appointments", async (req, res) => {
             let bookings = req.body;
@@ -47,7 +57,6 @@ async function run() {
         })
 
         // GET USER APPOINTMENTS BY EMAIL 
-
         app.get("/userAppointments", async (req, res) => {
             let userEmail = req.query.email;
             let result = await appointmentCollection.find({ email: userEmail }).toArray();
@@ -79,16 +88,6 @@ async function run() {
                 updatedStatus,
                 options
             );
-            res.send(result);
-        });
-
-        // API TO GET CURRENT USER DATA 
-        app.get("/userData/:email", async (req, res) => {
-            const email = req.params.email;
-            const query = {
-                email: email,
-            };
-            const result = await userCollection.findOne(query);
             res.send(result);
         });
 
